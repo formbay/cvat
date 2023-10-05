@@ -302,6 +302,45 @@ export default function ProjectPageComponent(): JSX.Element {
                                         </Button>
                                         <Button
                                             type='primary'
+                                            icon={<PlusOutlined />}
+                                            className='cvat-create-task-button'
+                                            onClick={async () => {
+                                                const offset = '0';// this needs to be incremental based on last request
+                                                const apiUrl = `https://prism-orchestrator.formbay.com.au/services/infer_response_cvat_seed?subdoc_id=555&image_count=50&cvat_project_id=${id}&offset=${offset}`; // eslint-disable-line
+                                                const requestData = {
+                                                    // Replace with the data you want to send in the POST request body
+                                                    // key1: 'value1',
+                                                    // key2: 'value2',
+                                                };
+                                                // we need to pass oauth2 token here
+                                                const Auth = 'xxxxxxx';
+                                                try {
+                                                    const response = await fetch(apiUrl, {
+                                                        method: 'POST',
+                                                        headers: {
+                                                            'Content-Type': 'application/json',
+                                                            Authorization: `Bearer ${Auth}`,
+                                                            // Specify the content type as JSON if needed
+                                                        },
+                                                        body: JSON.stringify(requestData),
+                                                    });
+
+                                                    if (response.ok) {
+                                                        const data = await response.json();
+                                                        alert(JSON.stringify(data));
+                                                    } else {
+                                                        alert('API request failed');
+                                                    }
+                                                } catch (error) {
+                                                    alert('An error occurred');
+                                                    console.error(error);
+                                                }
+                                            }}
+                                        >
+                                            Create a Prism task
+                                        </Button>
+                                        <Button
+                                            type='primary'
                                             icon={<span className='anticon'><MultiPlusIcon /></span>}
                                             className='cvat-create-multi-tasks-button'
                                             onClick={() => history.push(`/tasks/create?projectId=${id}&many=true`)}
